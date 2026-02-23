@@ -1,8 +1,14 @@
 // product (상품) 과 관련된 라우팅 정보
 const router = require("express").Router();
+const { upload2 } = require("../middleware/multer");
 
 router.get("/", (req, res) => {
   res.send("/product의 Root 페이지.");
+});
+
+router.post("/upload_file", upload2.array("myImg"), (req, res) => {
+  console.log("app.post_req.body => ", req.body);
+  res.send("파일업로드 테스트");
 });
 
 module.exports = router;
