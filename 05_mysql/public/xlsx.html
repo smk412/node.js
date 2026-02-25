@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XLSX 업로드</title>
+    <link rel="stylesheet" href="./xlsx.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>XLSX 파일 업로드</h1>
+      <p class="description">
+        업로드할 Excel(.xlsx) 파일을 선택한 후 제출하세요.
+      </p>
+
+      <form
+        id="xlsxForm"
+        action="/api/excel_upload"
+        method="POST"
+        enctype="multipart/form-data"
+        class="upload-form"
+      >
+        <div class="file-input-wrapper">
+          <input
+            type="file"
+            name="excelFile"
+            id="excelFile"
+            accept=".xlsx"
+            required
+          />
+          <label for="excelFile" class="file-label"> 파일 선택 </label>
+          <span id="file-name">선택된 파일 없음</span>
+        </div>
+
+        <button type="submit" class="submit-btn">업로드 및 DB 저장</button>
+      </form>
+    </div>
+
+    <script>
+      document.querySelector("#xlsxForm").addEventListener("submit", (e) => {
+        const formData = new FormData();
+        formData.append("excelFile", e.target[4].files[0]);
+        fetch("./api/excel_upload", {
+          method: "post",
+          body: formData,
+        })
+          .then((resp) => resp.json())
+          .then((data) => {
+            console.log("xlsx.html'data.retCode => ", data.retCode);
+            if (data.retCode == "OK") {
+              alert("쿼리성공");
+              location.reload();
+            } else {
+              alert("쿼리실패");
+            }
+          })
+          .catch((err) => console.log(err));
+      });
+
+      const fileInput = document.getElementById("excelFile");
+      const fileNameDisplay = document.getElementById("file-name");
+
+      fileInput.addEventListener("change", function () {
+        if (fileInput.files.length > 0) {
+          fileNameDisplay.textContent = fileInput.files[0].name;
+        } else {
+          fileNameDisplay.textContent = "선택된 파일 없음";
+        }
+      });
+    </script>
+  </body>
+</html>
