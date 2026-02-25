@@ -26,4 +26,19 @@ const send = async (data) => {
   });
 };
 
+// send({
+//   from: "whu14777@daum.net",
+//   to: "tjdtn7897@gmail.com",
+//   subject: "파일첨부테스트",
+//   html: "<p>파일첨부연습</p>",
+//   attachments: [
+//     {
+//       filename: "레드향.jpg", // 파일명
+//       path: __dirname + "/uploads/" + "레드향.jpg", // 실제 파일
+//     },
+//   ],
+// });
+
+// console.log("mail send . . .");
+
 module.exports = { send };

@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=DM+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./send_mail.css" />
   </head>
   <body>
     <div class="bg-grid"></div>
@@ -22,7 +22,13 @@
         <p class="header-sub">새 메시지를 작성하고 전송하세요</p>
       </header>
 
-      <form class="mail-form" id="mailForm">
+      <form
+        class="mail-form"
+        id="mailForm"
+        action="./api/mail"
+        method="post"
+        enctype="multipart/form-data"
+      >
         <div class="form-group">
           <label class="label" for="from"
             >발신자 <span class="required">*</span></label
@@ -82,13 +88,17 @@
           >
           <textarea
             class="textarea"
-            id="body"
-            name="body"
+            id="text"
+            name="text"
             placeholder="메일 내용을 입력하세요..."
             rows="10"
             required
           ></textarea>
           <div class="char-count"><span id="charCount">0</span>자</div>
+        </div>
+
+        <div class="form-group">
+          <input type="file" name="myfile" />
         </div>
 
         <div class="form-actions">
@@ -107,42 +117,56 @@
       document //
         .querySelector("#mailForm")
         .addEventListener("submit", (e) => {
+          // console.log(e);
           e.preventDefault(); // form submit 기본기능 차단
           // 필요항목
           const from = document.querySelector("#from").value;
           const to = document.querySelector("#to").value;
           const subject = document.querySelector("#subject").value;
-          const text = document.querySelector("#body").value;
+          const text = document.querySelector("#text").value;
           if (!from || !to || !subject || !text) {
             alert("필수 항목 입력");
             return;
           }
-          // fetch
+
+          const formData = new FormData(); // multipart 요청.
+          formData.append("from", from);
+          formData.append("to", to);
+          formData.append("subject", subject);
+          formData.append("text", text);
+          formData.append("myfile", e.target[4].files[0]);
+
           fetch("./api/mail", {
             method: "post",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ from, to, subject, text }),
+            // headers: { "Content-Type": "application/json" },
+            body: formData,
           })
             .then((resp) => resp.json())
             .then((data) => {
               console.log(data);
+              if (data.retCode == "OK") {
+                alert("메일발송");
+                location.reload();
+              } else {
+                alert("발송실패");
+              }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.log(err)); // form 기능 그대로 쓰기로 하면서 나는  서버 500 오류 막기위해 fetch 주석처리
         });
 
       const textarea = document.getElementById("body");
       const charCount = document.getElementById("charCount");
-      textarea.addEventListener("input", () => {
-        charCount.textContent = textarea.value.length;
-      });
+      // textarea.addEventListener("input", () => {
+      //   charCount.textContent = textarea.value.length;
+      // });
 
       const form = document.getElementById("mailForm");
       const toast = document.getElementById("toast");
       form.addEventListener("submit", (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         toast.classList.add("show");
         setTimeout(() => toast.classList.remove("show"), 3000);
-        form.reset();
+        // form.reset();
         charCount.textContent = "0";
       });
     </script>
