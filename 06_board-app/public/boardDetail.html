@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>글 상세 화면</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 40px;
+        background-color: #f4f7f6;
+        color: #333;
+      }
+      .container {
+        max-width: 800px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+      h3 {
+        border-bottom: 2px solid #333;
+        padding-bottom: 15px;
+        margin-top: 0;
+      }
+
+      /* 메타 정보 (번호, 작성자, 날짜) */
+      .post-info {
+        display: flex;
+        gap: 20px;
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
+      }
+      .info-item b {
+        color: #000;
+      }
+
+      /* 글 내용 구역 */
+      .content-box {
+        min-height: 300px;
+        line-height: 1.6;
+        padding: 10px 0;
+        font-size: 1.1em;
+        white-space: pre-wrap;
+      }
+
+      /* 버튼 스타일 */
+      .btn-group {
+        margin-top: 30px;
+        text-align: right;
+      }
+      .btn {
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+        background: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-list {
+        background: #6c757d;
+      }
+      .btn:hover {
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h3>[3] CSS로 테이블 꾸미는 방법 안내</h3>
+
+      <div class="post-info">
+        <div class="info-item"><b>글번호:</b> 3</div>
+        <div class="info-item"><b>작성자:</b> 디자인팀</div>
+        <div class="info-item"><b>작성일자:</b> 2024-05-20</div>
+      </div>
+
+      <div class="content-box">
+        안녕하세요. 디자인팀입니다. 게시판을 더 깔끔하게 보이게 하는 CSS 팁을
+        공유합니다. 1. 테이블 스타일링 시 border-collapse 속성을 활용하세요. 2.
+        마우스 호버 효과를 주면 사용자가 어느 행을 보는지 알기 쉽습니다. 3.
+        여백(padding)을 충분히 주어 가독성을 높이세요. 감사합니다.
+      </div>
+
+      <div class="btn-group">
+        <a href="#" class="btn btn-list">목록으로</a>
+        <button class="btn">수정하기</button>
+      </div>
+    </div>
+  </body>
+</html>
