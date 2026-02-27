@@ -4,47 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>게시글 목록</title>
-    <style>
-      /* 전체적인 폰트 및 레이아웃 설정 */
-      body {
-        font-family: "Pretendard", sans-serif;
-        padding: 20px;
-        background-color: #f9f9f9;
-      }
-      h3 {
-        color: #333;
-        border-bottom: 2px solid #444;
-        padding-bottom: 10px;
-      }
-      /* 테이블 스타일링 */
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: white;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
-      th,
-      td {
-        padding: 12px 15px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-      }
-      /* 헤더 색상 강조 */
-      th {
-        background-color: #007bff;
-        color: white;
-        font-weight: bold;
-      }
-      /* 마우스 호버 효과 */
-      tr:hover {
-        background-color: #f1f1f1;
-        cursor: pointer;
-      }
-      /* 제목 왼쪽 정렬 */
-      .title-column {
-        text-align: left;
-      }
-    </style>
+    <link rel="stylesheet" href="./boardList.css" />
   </head>
   <body>
     <h3>게시글 목록</h3>
@@ -64,11 +24,12 @@
       fetch("./api/board")
         .then((resp) => resp.json())
         .then((data) => {
+          // console.log("boardList.data", data);
           // tr의 상위요소에 insertAdjacentHTML() 함수를 활용
           const parent = document.querySelector("tbody");
           // for .. of 반복문
           for (let board of data) {
-            console.log(board);
+            // console.log("boardList.let board", board);
             const { board_id, title, name, created_at } = board;
             const html = `
                   <tr>
@@ -89,10 +50,6 @@
               // 클릭한 글 번호를 localStorage에 저장;
               localStorage.setItem("page", e.target.dataset.page);
               location.href = "boardDetail.html";
-
-              fetch("./api/board/:no")
-                .then((resp) => resp.json())
-                .then((data) => {});
             });
           });
         })

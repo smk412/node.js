@@ -3,9 +3,6 @@ const express = require("express");
 require("dotenv").config();
 const session = require("express-session");
 
-const boardRoutes = require("./routes/boardRoutes");
-const authRoutes = require("./routes/authRoutes");
-
 // 서버 인스턴스.
 const app = express();
 app.use(express.static("public"));
@@ -21,7 +18,7 @@ app.use(
       secure: false, // true => https, false => http
       maxAge: 10 * 60 * 1000,
     },
-    store: new fileStore(),
+    // store: new fileStore(),
   }),
 );
 
@@ -29,8 +26,8 @@ app.use(
 app.use(express.json());
 
 //라우팅 정보
-app.use("/api/board", boardRoutes);
-app.use("./api/auth", authRoutes);
+app.use("/api/board", require("./routes/boardRoutes"));
+app.use("/api/auth", require("./routes/authRoutes"));
 
 // 서버 시작.
 app.listen(3000, () => {

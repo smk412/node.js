@@ -25,4 +25,14 @@ async function insert(data) {
   return boardModel.insertById(data);
 }
 
-module.exports = { getList, getDetail, insert };
+// 삭제 (remove)
+async function remove(board_id, user) {
+  const [rows] = boardModel.getById(board_id);
+  const board = rows[0];
+  // 권한 체크 (작성자 번호 == 계정 번호)
+  if (board.writer_id != user.member_id) {
+    return "NO_AUTH";
+  }
+  return boardModel.remove(board_id);
+}
+module.exports = { getList, getDetail, insert, remove };

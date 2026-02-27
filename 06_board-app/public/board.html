@@ -113,7 +113,7 @@
           writer_id: document.querySelector("#writer_id").value,
         };
 
-        if (!postData.title | !postData.content | !postData.writer_id) {
+        if (!postData.title | !postData.content) {
           console.log(postData);
           alert("필수 항목 입력");
           return;
@@ -121,8 +121,14 @@
 
         fetch("./api/board/", {
           method: "post",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(postData),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            title: postData.title,
+            content: postData.content,
+          }),
         })
           .then((resp) => resp.json())
           .then((data) => {
@@ -134,7 +140,7 @@
               alert(`[에러] ${data.retMsg}`);
             }
           })
-          .catch((err) => console.error(err));
+          .catch(console.log);
       });
     </script>
   </body>

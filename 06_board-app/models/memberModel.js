@@ -2,10 +2,8 @@ const pool = require("../config/db");
 
 //  (insert)
 async function createMember(loginId, name, password, role) {
-  const sql = `
-    INSERT INTO tbl_member (login_id, name, password, role)
-    VALUES (?, ?, ?, ?)
-  `;
+  const sql = `INSERT INTO tbl_member (login_id, name, password, role)
+               VALUES (?, ?, ?, ?)`;
   return pool.query(sql, [loginId, name, password, role]);
 }
 

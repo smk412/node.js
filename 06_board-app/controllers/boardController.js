@@ -3,8 +3,9 @@ const boardService = require("../services/boardService");
 
 // /api/board
 const list = async (req, res) => {
-  console.log("현재로그인정보: ", req.session.user.login_id);
   const [rows] = await boardService.getList();
+  // console.log("boardController.list().[rows]", rows);
+
   res.json(rows); // 화면에 출력될 결과
 };
 
@@ -12,12 +13,21 @@ const list = async (req, res) => {
 const detail = async (req, res) => {
   const { id } = req.params;
   const [rows] = await boardService.getDetail(id);
-  res.json(rows);
+  console.log(rows);
+  //현재 로그인 정보(login_id, name)
+  const { login_id, name, member_id } = req.session.user || {
+    login_id: "",
+    name: "",
+    member_id: "",
+  }; //
+
+  res.json({ user: { login_id, name, member_id }, data: rows });
 };
 
 // post /api/board/
 const insert = async (req, res) => {
-  const { title, content, writer_id } = req.body;
+  const { title, content } = req.body;
+  const writer_id = req.user.member_id; // token에 저장된 값
 
   try {
     await boardService.insert({ title, content, writer_id });
@@ -44,4 +54,15 @@ const insert = async (req, res) => {
   // res.json(result);
 };
 
-module.exports = { list, detail, insert };
+// 삭제 (remove)
+const remove = async (req, res) => {
+  const { id } = req.params; // /api/board/3 -> [id == 3]
+  const result = await boardService.remove(id, req.user);
+
+  if (result == "NO_AUTH") {
+    return res.json({ retCode: "NG", retMsg: "권한 없음." });
+  }
+  res.json({ retCode: "OK" });
+};
+
+module.exports = { list, detail, insert, remove };
